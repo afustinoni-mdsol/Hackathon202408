@@ -1,5 +1,9 @@
+use std::fmt::Error;
+
 use actix_web::{get, web, App, HttpServer, Responder};
 use serde::{Serialize, Deserialize};
+
+mod app_error;
 
 #[derive(Serialize)]
 struct Measurement {
@@ -35,11 +39,17 @@ async fn hello(name: web::Path<String>) -> impl Responder {
     format!("Hello {}!", &name)
 }
 
+#[get("/error")]
+async fn err() -> Result<(), app_error::Error> {
+    Err(app_error::Error::Logic("Lol"))
+}
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     HttpServer::new(|| App::new()
         .service(index)
         .service(hello)
+        .service(err)
         .service(current_temperature))
         .bind(("127.0.0.1", 8080))?
         .run()
