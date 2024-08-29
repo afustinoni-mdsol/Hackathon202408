@@ -5,13 +5,16 @@ use serde::{Serialize};
 #[derive(Error, Debug, Serialize)]
 pub enum Error {
     #[error("Logic error: {0}")]
-    Logic(String)
+    Logic(String),
+    #[error("Lulzy error")]
+    Lulzy()
 }
 
 impl ResponseError for Error {
     fn status_code(&self) -> StatusCode {
-        match self {
-            Logic => (StatusCode::INTERNAL_SERVER_ERROR)
+        match &self {
+            Error::Logic(_) => StatusCode::INTERNAL_SERVER_ERROR,
+            Error::Lulzy() => StatusCode::IM_A_TEAPOT
         }
     }
 

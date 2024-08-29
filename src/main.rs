@@ -40,8 +40,8 @@ async fn hello(name: web::Path<String>) -> impl Responder {
 }
 
 #[get("/error")]
-async fn err() -> Result<(), app_error::Error> {
-    Err(app_error::Error::Logic("Lol"))
+async fn err() -> Result<String, app_error::Error> {
+    Err(app_error::Error::Logic("Something went wrong".to_string()))
 }
 
 #[actix_web::main]
