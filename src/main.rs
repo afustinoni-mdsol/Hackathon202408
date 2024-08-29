@@ -3,6 +3,7 @@ use std::fmt::Error;
 use actix_web::{get, web, App, HttpServer, Responder};
 use serde::{Serialize, Deserialize};
 
+mod models;
 mod app_error;
 
 #[derive(Serialize)]
